@@ -38,18 +38,20 @@ define(function(require, exports, module) {
   menuView._eventOutput.on('is2d', function (boolean) {
     if (boolean) {
       // invokes function on prerender
-      Engine.on('prerender', _changePerspective);
-      perspectiveTrans.set(500000, {
-        curve: Easing.inQuint,
-        duration: 200
-          // after perspective has changed, event is removed to improve performance
-      }, function() { Engine.removeListener('prerender', _changePerspective); });
+      mainContext.setPerspective(500000, {duration: 200, curve: Easing.inQuint});
+      // Engine.on('prerender', _changePerspective);
+      // perspectiveTrans.set(500000, {
+      //   curve: Easing.inQuint,
+      //   duration: 200
+      //     // after perspective has changed, event is removed to improve performance
+      // }, function() { Engine.removeListener('prerender', _changePerspective); });
     } else {
-      Engine.on('prerender', _changePerspective);
-      perspectiveTrans.set(perspective, {
-        curve: Easing.outQuint,
-        duration: 200
-      }, function() { Engine.removeListener('prerender', _changePerspective); });
+      mainContext.setPerspective(perspective, {duration: 200, curve: Easing.inQuint});
+      // Engine.on('prerender', _changePerspective);
+      // perspectiveTrans.set(perspective, {
+      //   curve: Easing.outQuint,
+      //   duration: 200
+      // }, function() { Engine.removeListener('prerender', _changePerspective); });
     }
   });
 

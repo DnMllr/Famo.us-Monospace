@@ -6,6 +6,11 @@ define(function(require, exports, module) {
   var CubeView      = require('views/CubeView');
   var MouseSync     = require('famous/inputs/MouseSync');
   var TouchSync     = require('famous/inputs/TouchSync');
+  var GenericSync   = require('famous/inputs/GenericSync');
+  GenericSync.register({
+    touch: TouchSync,
+    Mouse: MouseSync
+  })
 
   function DestroyerCube() {
     View.apply(this, arguments);
@@ -67,35 +72,20 @@ define(function(require, exports, module) {
     var mouseSync = new MouseSync();
     var touchSync = new TouchSync();
 
-    mouseSync.on('start', function (data) {
+    var sync = new GenericSync();
+
+    sync.on('start', function (data) {
       // initialize pos data
       this.posData = {x:0, y:0};
     }.bind(this));
 
-    mouseSync.on('update', function (data) {
+    sync.on('update', function (data) {
       //update x, y position
       this.posData.x += data.delta[0];
       this.posData.y += data.delta[1];
     }.bind(this));
 
-    mouseSync.on('end', function () {
-      // calculate total movement to determin up/down/right/left and emit movement event
-      movement = _calculateMovement(this.posData);
-      this._eventOutput.emit('movingCubeToGB', movement);
-    }.bind(this));
-
-    touchSync.on('start', function (data) {
-      // initialize pos data
-      this.posData = {x:0, y:0};
-    }.bind(this));
-
-    touchSync.on('update', function (data) {
-      //update x, y position
-      this.posData.x += data.delta[0];
-      this.posData.y += data.delta[1];
-    }.bind(this));
-
-    touchSync.on('end', function () {
+    sync.on('end', function () {
       // calculate total movement to determin up/down/right/left and emit movement event
       movement = _calculateMovement(this.posData);
       this._eventOutput.emit('movingCubeToGB', movement);

@@ -83,8 +83,7 @@ define(function(require, exports, module) {
       });
     }
 
-    surfaces.push(amar);
-    surfaces.push(joe);
+    surfaces.push(amar, joe);
 
     this.add(grid);
   }
